@@ -11,17 +11,19 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Sarathi from '../../../../assets/sarathi.png';
+import Sarathi from '../../../../../../assets/sarathi.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 // import PeopleIcon from '@mui/icons-material/People';
 // import DriveEtaIcon from '@mui/icons-material/DriveEta';
+// import DlDetail from '../DlDetails';
+// import Users from '../User';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
 const list = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' }
 ];
 
 export default function PermanentDrawerLeft(props) {
@@ -37,7 +39,7 @@ export default function PermanentDrawerLeft(props) {
             <CssBaseline />
             <AppBar
                 position="fixed"
-                sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: '#8BC34A' }}
+                sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
             >
                 <Toolbar sx={{ display: 'flex', position: 'sticky' }}>
                     <Typography variant="h6" noWrap component="div">
@@ -64,7 +66,7 @@ export default function PermanentDrawerLeft(props) {
                     <img src={Sarathi} alt='Sarathi' style={{ height: '9vh', width: '9vw', padding: '9px' }} />
                 </Box>
 
-                <List>
+                <List className={styles.container.css}>
                     {list.map(({ text, icon, path }) => (
                         <ListItem key={text}
                             disablePadding

@@ -3,11 +3,11 @@ import styles from './style.module.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from '../screens/Auth/Login';
 import Signup from '../screens/Auth/Signup';
-import Home from '../screens/RtoPage/components/Home';
-import Drawer from '../screens/RtoPage/components/User/Drawer';
-import Dashboard from '../screens/RtoPage/DashBoard';
 import PrivateRoute from '../routes/privateRoute';
 import { Box } from '@mui/material';
+import Dashboard from '../screens/RtoPage/DashBoard';
+import Home from '../screens/RtoPage/components/User/Components/Home'
+import Drawer from '../screens/RtoPage/components/Admin/components/Drawer'
 
 const AppRouter = () => {
     const [selectMenu, setSelectMenu] = useState('')

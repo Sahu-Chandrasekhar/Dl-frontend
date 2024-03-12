@@ -1,118 +1,133 @@
 import React, { useState } from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TablePagination from '@mui/material/TablePagination';
-import Button from '@mui/material/Button';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, TablePagination, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import PreviewIcon from '@mui/icons-material/Preview';
+// import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+// import EditModel from '../DashBoard/EditModal'
 
-const columns = [
-  { id: 'id', label: 'Index No.', minWidth: 170 },
-  { id: 'Adhaar', label: 'Adhaar Number', minWidth: 13 },
-  { id: 'Pan', label: 'Pan Card Number', minWidth: 9, align: 'right' },
-  { id: 'DL', label: 'Driving Licence', align: 'right' },
-  { id: 'status', label: 'Status', align: 'right' },
+import styles from './style.module.css';
+
+const data = [
+  { name: 'John Doe', adhaarNumber: '123456789012', panNumber: 'ABCDE1234F', status: 'Active' },
+  { name: 'Jane Smith', adhaarNumber: '987654321098', panNumber: 'FGHIJ5678K', status: 'Inactive' },
+  { name: 'Alice Johnson', adhaarNumber: '456789012345', panNumber: 'LMNOP5678Q', status: 'Active' },
+  { name: 'Bob Brown', adhaarNumber: '789012345678', panNumber: 'RSTUV1234G', status: 'Inactive' },
+  { name: 'Eve Williams', adhaarNumber: '234567890123', panNumber: 'WXYZ4567H', status: 'Active' },
+  { name: 'Charlie Davis', adhaarNumber: '901234567890', panNumber: 'JKLMN8901P', status: 'Active' },
 ];
 
-const DashBoard = () => {
-  const [rows, setRows] = useState([
-    { id: 1, Adhaar: '1234567890', Pan: 'ABCDE1234F', DL: 'DL123456', status: 'Active' },
-  ]);
-
+const CustomTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  return (
-    <div>
-      <div className='nav-bar'>
-        <div className="card" style={{ width: '18rem' }}>
-          <div className="card-header">
-            <p className='card-titel'> Dl user detail</p>
-          </div>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">Name: <span>name</span></li>
-            <li className="list-group-item">Number: <span>Phone</span></li>
-            <li className="list-group-item">Email: <span>email</span></li>
-            <li className="list-group-item">Gender: <span>gender</span></li>
-          </ul>
-        </div>
-      </div>
+  const handleDeleteClick = (rowIndex) => {
+    setSelectedRow(rowIndex);
+    setOpenDialog(true);
+  };
 
-      <Paper sx={{ marginTop: '3rem', marginLeft: '5rem', width: '52rem', boxShadow: '0px 0px 6px 0px #7c7676' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
+  const handleDeleteConfirm = () => {
+    // Perform delete action here with selectedRow
+    console.log('Deleting row:', selectedRow);
+    setOpenDialog(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDialog(false);
+  };
+
+  // editModeal
+  // const [dilogOpen, setDilogOpen] = useState(false);
+  // function handelOpen(value) {
+  //   setDilogOpen(true)
+  // }
+
+  return (
+    <div style={{ width: '84%' }}>
+      <TableContainer component={Paper} className={styles.container}>
+        <Table aria-label="customized table" className={styles.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell className={styles.tableHeadCell}>Index</TableCell>
+              <TableCell className={styles.tableHeadCell}>Name</TableCell>
+              <TableCell className={styles.tableHeadCell}>Adhaar Number</TableCell>
+              <TableCell className={styles.tableHeadCell}>Pan Number</TableCell>
+              <TableCell className={styles.tableHeadCell}>Status</TableCell>
+              <TableCell className={styles.tableHeadCell}>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.length === 0 ? (
               <TableRow>
-                <TableCell align="center" colSpan={2}>
-                  Driving Licence Details
-                </TableCell>
-                <TableCell align="center" colSpan={3}>
-                  <Button className='apply'>apply now</Button>
+                <TableCell colSpan={6} align="center" className={styles.noData}>
+                  No data found
                 </TableCell>
               </TableRow>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={columns.length} align="center">
-                    No records found
+            ) : (
+              data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                <TableRow key={index} className={styles.tableRow}>
+                  <TableCell className={styles.tableCell}>{index + 1}</TableCell>
+                  <TableCell className={styles.tableCell}>{row.name}</TableCell>
+                  <TableCell className={styles.tableCell}>{row.adhaarNumber}</TableCell>
+                  <TableCell className={styles.tableCell}>{row.panNumber}</TableCell>
+                  <TableCell className={styles.tableCell}>{row.status}</TableCell>
+                  <TableCell className={styles.tableCell}>
+                    <IconButton aria-label="preview" className={styles.iconButton} color="primary">
+                      <PreviewIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" className={styles.iconButton} color="error" onClick={() => handleDeleteClick(index)}>
+                      <DeleteForeverOutlinedIcon />
+                    </IconButton>
+                    {/*<IconButton aria-label="edit" className={styles.iconButton} color="primary" onClick={handelOpen}>
+                      <EditOutlinedIcon />
+                    </IconButton> */}
                   </TableCell>
                 </TableRow>
-              ) : (
-                rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                        <TableCell>{row.id}</TableCell>
-                        <TableCell>{row.Adhaar}</TableCell>
-                        <TableCell align='right'>{row.Pan}</TableCell>
-                        <TableCell align='right'>{row.DL}</TableCell>
-                        <TableCell align='right'>{row.status}</TableCell>
-                        {/* Add more TableCell components for additional columns */}
-                      </TableRow>
-                    );
-                  })
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
+              ))
+            )}
+          </TableBody>
+        </Table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50]}
+          rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          className={styles.pagination}
+          labelRowsPerPage="Rows per page"
         />
-      </Paper>
+      </TableContainer>
+     {/* {dilogOpen && <EditModel dilogOpen={dilogOpen} setDilogOpen={setDilogOpen} />} */}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this row?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
 
-export default DashBoard;
+export default CustomTable;
